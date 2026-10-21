@@ -529,6 +529,12 @@ def _stream(agent, payload, printer, config, state):
 
 
 def main():
+    # BEFORE the parser is built. argparse evaluates `default=` at build
+    # time, so a default read from the environment is fixed before .env has
+    # been loaded -- MODEL=nrp:qwen3 in .env was silently ignored and the run
+    # used the built-in default instead.
+    env_file = load_dotenv()
+
     ap = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -555,7 +561,6 @@ def main():
                          "read whatever a previous run left there")
     a = ap.parse_args()
 
-    env_file = load_dotenv()
     dataset = Path(a.dataset).expanduser().resolve()
     if not dataset.exists():
         print(f"\n  no such dataset: {dataset}\n")
