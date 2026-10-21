@@ -1,0 +1,14 @@
+# Secrets. .env holds an API key; never commit it.
+.env
+.env~
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# A run writes to the temp directory by default; this catches -o into the repo.
+dataset-insight-*/
